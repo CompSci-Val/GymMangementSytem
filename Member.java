@@ -1,1 +1,7 @@
-Public class java Member{}
+public class Member {
+    
+
+
+
+
+}
