@@ -3,7 +3,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-
 public class TimeTracking implements Comparable<TimeTracking> {
     public static final int DEFAULT_SESSION_MINUTES = 120;
 
