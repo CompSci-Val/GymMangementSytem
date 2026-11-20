@@ -22,11 +22,12 @@ public class Trainer {
     public String getName() {
         return name;
     }
+   
+     
 
     public String getSpecialization() {
         return specialization;
     }
-
     public boolean isAvailable(String dateTime) {
         // Implement logic to check if the trainer is available at the given dateTime
     
@@ -38,5 +39,6 @@ public class Trainer {
         this.isAvailable = availability;
 
     }
+
 
 }
