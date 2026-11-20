@@ -16,7 +16,7 @@ private String email;
 private String phoneNumber;
 private Date dateOfBirth;
 
-private Member(int id, String name, String email, String phoneNumber, Date dateOfBirth) {
+public Member(int id, String name, String email, String phoneNumber, Date dateOfBirth) {
 // Constructor to initialize member attributes
 // This constructore stores the member's information in the class variables
     this.id = id;
@@ -52,8 +52,18 @@ public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;}    
 public void setDateOfBirth(Date dateOfBirth) {
     this.dateOfBirth = dateOfBirth;}
+ public String calculateAge() {
+    Date currentDate = new Date();
+    int age = currentDate.getYear() - dateOfBirth.getYear();
+    if (currentDate.getMonth() < dateOfBirth.getMonth() || 
+        (currentDate.getMonth() == dateOfBirth.getMonth() && currentDate.getDate() < dateOfBirth.getDate())) {
+        age--;
+    }
+    return String.valueOf(age);
 
 
 
+}//end of calculateAge
 
-}
+
+}//end of Member class
