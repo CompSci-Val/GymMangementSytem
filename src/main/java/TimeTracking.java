@@ -1,5 +1,3 @@
-package your_package_name; // <-- CHANGE THIS to match your project's package
-
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
