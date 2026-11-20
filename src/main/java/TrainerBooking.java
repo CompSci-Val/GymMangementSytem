@@ -18,15 +18,6 @@ public class TrainerBooking {
         this.trainers = new ArrayList<>();
     }
 
-     public Trainer getTrainerById(int id) {
-        // Implement logic to retrieve a trainer by their ID
-          for (Trainer trainer : trainers) {
-            if (trainer.getId() == id) {
-                return trainer;
-            }
-        }
-        return null;
-    }
     // Method to view available trainers
     public void viewTrainers() {
         // Implementation to display available trainers
