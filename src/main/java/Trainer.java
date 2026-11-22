@@ -1,44 +1,42 @@
 public class Trainer {
-    private int id;
+
+    private String trainerID;
     private String name;
     private String specialization;
-    private boolean isAvailable;
+    private boolean available;
 
-    public Trainer(int id, String name) {
-        this.id = id;
-        this.name = name;
-        this.isAvailable = true; // Default availability
-    }
-    public Trainer(int id, String name, String specialization, boolean isAvailable) {
-        this.id = id;
+    public Trainer(String trainerID, String name,
+                   String specialization) {
+        this.trainerID = trainerID;
         this.name = name;
         this.specialization = specialization;
-        this.isAvailable = isAvailable;
+        this.available = true;
     }
-  public int getId() {
-        return id;
+
+    public String getTrainerID() {
+        return trainerID;
     }
 
     public String getName() {
         return name;
     }
-   
-     
 
     public String getSpecialization() {
         return specialization;
     }
-    public boolean isAvailable(String dateTime) {
-        // Implement logic to check if the trainer is available at the given dateTime
-    
-        // For demonstration purposes, we'll assume the trainer is always available
-        return isAvailable;
+
+    public boolean isAvailable() {
+        return available;
     }
 
-    public void EditAvailability(boolean availability) {
-        this.isAvailable = availability;
-
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
-
+    public void displayTrainer() {
+        System.out.println("Trainer ID: " + trainerID);
+        System.out.println("Name: " + name);
+        System.out.println("Specialization: " + specialization);
+        System.out.println("Available: " + available);
+    }
 }

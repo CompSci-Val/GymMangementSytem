@@ -1,43 +1,52 @@
+import java.time.LocalDateTime;
+
 public class Booking {
-    public int Bookingid;
-    public String memberName;
-    public int memberId;    
-    public String trainerName;
-    public int trainerId;
-    public String dateTime;
 
-    public Booking(int Bookingid, int memberId, int trainerId, String dateTime) {
-        this.Bookingid = Bookingid;
-        this.memberId = memberId;
-        this.trainerId = trainerId;
-        this.dateTime = dateTime;
-    }
-    public Booking(String memberName, int memberId, String trainerName, int trainerId, String dateTime) {
-        this.memberName = memberName;
-        this.memberId = memberId;
-        this.trainerName = trainerName;
-        this.trainerId = trainerId;
-        this.dateTime = dateTime;
-    }
-   public int getBookingId() {
-        return Bookingid;
+    private String bookingID;
+    private String memberID;
+    private String trainerID;
+    private LocalDateTime bookingDateTime;
+    private String status;
+
+    public Booking(String bookingID, String memberID,
+                   String trainerID,
+                   LocalDateTime bookingDateTime) {
+        this.bookingID = bookingID;
+        this.memberID = memberID;
+        this.trainerID = trainerID;
+        this.bookingDateTime = bookingDateTime;
+        this.status = "Confirmed";
     }
 
-    public int getMemberId() {
-        return memberId;
-    }
-    public String getMemberName() {
-        return memberName;
-    }
-    public String getTrainerName() {
-        return trainerName;
+    public String getBookingID() {
+        return bookingID;
     }
 
-    public int getTrainerId() {
-        return trainerId;
+    public String getMemberID() {
+        return memberID;
     }
 
-    public String getDateTime() {
-        return dateTime;
+    public String getTrainerID() {
+        return trainerID;
+    }
+
+    public LocalDateTime getBookingDateTime() {
+        return bookingDateTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void displayBooking() {
+        System.out.println("Booking ID: " + bookingID);
+        System.out.println("Member ID: " + memberID);
+        System.out.println("Trainer ID: " + trainerID);
+        System.out.println("Date and Time: " + bookingDateTime);
+        System.out.println("Status: " + status);
     }
 }
