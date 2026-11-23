@@ -70,7 +70,7 @@ public class CapacityManagement {
             System.out.println("Waiting list is empty.");
         } else {
             for (WaitlistEntry entry : waitlist) {
-                System.out.println(entry.getMemberID());
+                System.out.println(entry.getMemberId());
             }
         }
     }
