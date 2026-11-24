@@ -14,7 +14,7 @@ public class TrainerDatabase{
 
         trainer.add(new Trainer(7023, "Tori-Ann Valentine"));
 
-        trainer.add(new Trainer(1234, "Kerresa"));
+        trainer.add(new Trainer(1234, "Kerresa McGann"));
     }
     public void addTrainers(Trainer trainer){
              this.trainer.add(trainer);
