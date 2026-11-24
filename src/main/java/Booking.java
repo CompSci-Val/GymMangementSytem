@@ -3,12 +3,12 @@ import java.time.LocalDateTime;
 public class Booking {
 
     private String bookingID;
-    private String memberID;
+    private int memberID;
     private String trainerID;
     private LocalDateTime bookingDateTime;
     private String status;
 
-    public Booking(String bookingID, String memberID,
+    public Booking(String bookingID, int memberID,
                    String trainerID,
                    LocalDateTime bookingDateTime) {
         this.bookingID = bookingID;
@@ -22,10 +22,11 @@ public class Booking {
         return bookingID;
     }
 
-    public String getMemberID() {
+
+    public int getMemberID() {
         return memberID;
     }
-
+   
     public String getTrainerID() {
         return trainerID;
     }

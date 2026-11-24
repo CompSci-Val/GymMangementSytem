@@ -7,6 +7,7 @@
 //viewBookings()	Display a member's existing bookings.
 import java.util.ArrayList;
 import java.util.Random;
+import java.time.LocalDateTime;
 
 public class TrainerBooking {
     private ArrayList<Trainer> trainers;
@@ -23,32 +24,35 @@ public class TrainerBooking {
         // Implementation to display available trainers
         System.out.println("Available Trainers:");
         for (Trainer trainer : trainers) {  
-            System.out.println("ID: " + trainer.getId() + ", Name: " + trainer.getName() + ", Specialization: " + trainer.getSpecialization());
+            System.out.println("ID: " + trainer.getTrainerID() + ", Name: " + trainer.getName() + ", Specialization: " + trainer.getSpecialization());
         }
         //return trainers;
 
     }
 
     // Method to check trainer availability
-    public boolean checkAvailability(int trainerId, String dateTime) {
+    public boolean checkAvailability(String trainerId, String dateTime) {
         for (Trainer trainer : trainers) {
-            if (trainer.getId() == trainerId && trainer.isAvailable(dateTime)) {
+           if (trainer.getTrainerID().equals(trainerId) && trainer.isAvailable()) {
                 return true;
             }
         }
         // Implementation to check if the trainer is available at the requested time
         return false; // Placeholder return value
     }
+    private String generateBookingID() {
+    return "B" +(1000 + random.nextInt(9000));
+    }
 
     // Method to book a trainer
-    public void bookTrainer(int memberId, int trainerId, String dateTime) {
+    public void bookTrainer(String memberId, String trainerId, LocalDateTime dateTime) {
         // Implementation to create a booking for an available trainer
-        int bookinId = random.nextInt(1000); // Generate a random booking ID
+        String bookingID = generateBookingID(); // Generate a random booking ID
         for(Trainer trainer :trainers){
-            if( trainer.isAvailable(dateTime) )
+            if( trainer.isAvailable() )
      
             {System.out.println("Trainer "+" "+trainer.getName()+"is availible for booking\n");}
-            bookings.add(new Booking(MemberDatabase.getMemberById(memberId).getName(),memberId, trainer.getName(), trainerId, dateTime));
+            bookings.add(new Booking(bookingID , Integer.parseInt(memberId), trainerId, dateTime));
             System.out.println("trainer session was sucessfully booked\n");
             
 
@@ -59,10 +63,10 @@ public class TrainerBooking {
     }
 
     // Method to cancel a booking
-    public void cancelBooking(int bookingId) {
+    public void cancelBooking(String bookingId) {
         // Implementation to cancel an existing booking
         for (Booking booking : bookings) {
-            if (booking.getBookingId() == bookingId) {
+            if (booking.getBookingID() == bookingId) {
                 bookings.remove(booking);
                 System.out.println("Booking with ID " + bookingId + " has been canceled.");
                 return;
@@ -76,8 +80,8 @@ public class TrainerBooking {
     public void viewBookings(int memberId) {
         // Implementation to display a member's existing bookings
         for (Booking booking : bookings) {
-            if (booking.getMemberId() == memberId) {
-                System.out.println("Booking ID: " + booking.getBookingId() + ", Trainer: " + booking.getTrainerName() + ", DateTime: " + booking.getDateTime());
+            if (booking.getMemberID() == memberId) {
+                System.out.println("Booking ID: " + booking.getMemberID() + ", Trainer: " + booking.getTrainerID() + ", DateTime: " + booking.getBookingDateTime());
             }
         }
     }

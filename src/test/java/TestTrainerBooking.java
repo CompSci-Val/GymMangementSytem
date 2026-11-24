@@ -11,7 +11,7 @@ public class TestTrainerBooking {
 
         for (Trainer trainer : database.getTrainers()) {
             System.out.println(
-                trainer.getId() + " " + trainer.getName()
+                trainer.getTrainerID() + " " + trainer.getName()
             );
         }
 

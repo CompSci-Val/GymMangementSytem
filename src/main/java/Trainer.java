@@ -12,7 +12,10 @@ public class Trainer {
         this.specialization = specialization;
         this.available = true;
     }
-
+    public Trainer(String trainerID, String name){
+        this.trainerID = trainerID;
+        this.name = name;
+    }
     public String getTrainerID() {
         return trainerID;
     }

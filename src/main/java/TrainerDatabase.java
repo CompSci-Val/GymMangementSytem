@@ -10,20 +10,20 @@ public class TrainerDatabase{
 
 
         //sample trainer for demonstration
-        trainer.add(new Trainer(5512, "Ajorney Lawrence"));
+        trainer.add(new Trainer("5512", "Ajorney Lawrence"));
 
-        trainer.add(new Trainer(7023, "Tori-Ann Valentine"));
+        trainer.add(new Trainer("7023", "Tori-Ann Valentine"));
 
-        trainer.add(new Trainer(1234, "Kerresa McGann"));
+        trainer.add(new Trainer("1234", "Kerresa McGann"));
     }
     public void addTrainers(Trainer trainer){
              this.trainer.add(trainer);
             }
         
-     public Trainer getTrainerById(int id) {
+     public Trainer getTrainerById(String id) {
         // Implement logic to retrieve a trainer by their ID
           for (Trainer trainers : trainer) {
-            if (trainers.getId() == id) {
+            if (trainers.getTrainerID() == id) {
                 return trainers;
             }
         }
