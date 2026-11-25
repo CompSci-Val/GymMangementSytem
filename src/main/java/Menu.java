@@ -37,13 +37,12 @@ public class Menu {
     private static CheckInandOut  CIO;
     private static List<Integer> remaining = new ArrayList<>();
 
-
     // Active gym sessions (memberId -> timer) and the full attendance history
     private static final Map<String, TimeTracking> sessions = new LinkedHashMap<>();
     private static final List<Attendance> attendanceLog = new ArrayList<>();
     // IDs currently on the waiting list (stops the same member joining twice)
     private static final Set<String> waitingIds = new HashSet<>();
-
+    private String pleasework;
 
     public static void main(String[] args) {
         // The databases fill their static lists in their constructors, so create them first
