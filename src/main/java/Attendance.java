@@ -23,13 +23,13 @@ public class Attendance {
         this.checkOutTime = LocalDateTime.now();
     }
 
-    // Calculates how long the member stayed (in minutes)
-    public long getTotalTimeSpentMinutes() {
+    // Calculates how long the member stayed (in seconds)
+    public long getTotalTimeSpentSeconds() {
         if (checkOutTime == null) {
             // Member is still in the gym
-            return Duration.between(checkInTime, LocalDateTime.now()).toMinutes();
+            return Duration.between(checkInTime, LocalDateTime.now()).toSeconds();
         }
-        return Duration.between(checkInTime, checkOutTime).toMinutes();
+        return Duration.between(checkInTime, checkOutTime).toSeconds();
     }
 
     // --- Getters ---

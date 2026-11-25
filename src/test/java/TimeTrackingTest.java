@@ -1,4 +1,4 @@
-package your_package_name; // <-- CHANGE THIS to match your project's package
+package your_package_name; // <-- CHANGE THIS to match  project's package
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,14 +23,14 @@ class TimeTrackingTest {
 
     @Test
     void remainingTimeDecreasesAsTimePasses() {
-        clock.advance(Duration.ofMinutes(20));
-        assertEquals(Duration.ofMinutes(40), tracker.calculateRemainingTime());
+        clock.advance(Duration.ofSeconds(20));
+        assertEquals(Duration.ofSeconds(40), tracker.calculateRemainingTime());
         assertEquals(40, tracker.getRemainingTime());
     }
 
     @Test
     void remainingTimeNeverGoesNegative() {
-        clock.advance(Duration.ofMinutes(90));
+        clock.advance(Duration.ofSeconds(90));
         assertEquals(Duration.ZERO, tracker.calculateRemainingTime());
     }
 
@@ -41,10 +41,10 @@ class TimeTrackingTest {
 
     @Test
     void endSessionRecordsDuration() {
-        clock.advance(Duration.ofMinutes(25));
+        clock.advance(Duration.ofSeconds(25));
         tracker.endSession();
         assertFalse(tracker.isActive());
-        assertEquals(25, tracker.getSessionDurationMinutes());
+        assertEquals(25, tracker.getSessionDurationSeconds());
     }
 
     @Test
@@ -56,11 +56,11 @@ class TimeTrackingTest {
     @Test
     void warningsFireAtThresholds() {
         // Note: we don't assert on System.out; this test just checks no exception.
-        clock.advance(Duration.ofMinutes(31));
+        clock.advance(Duration.ofSeconds(31));
         tracker.displayWarning(); // ~29 min left  -> 30-min warning
-        clock.advance(Duration.ofMinutes(15));
+        clock.advance(Duration.ofSeconds(15));
         tracker.displayWarning(); // ~14 min left  -> 15-min warning
-        clock.advance(Duration.ofMinutes(10));
+        clock.advance(Duration.ofSeconds(10));
         tracker.displayWarning(); // ~4 min left   -> 5-min warning
     }
 }

@@ -16,7 +16,7 @@ public class TestAttendance {
         System.out.println("Check-out time recorded: " + attendance.getCheckOutTime());
 
         // 4. Check the calculation
-        System.out.println("Total time spent (minutes): " + attendance.getTotalTimeSpentMinutes());
+        System.out.println("Total time spent (Seconds): " + attendance.getTotalTimeSpentSeconds());
         
         // (Note: It will say 0 minutes because it only waited 2 seconds, but if it prints 0 and not an error, it works!)
         System.out.println("SUCCESS: Attendance class is working.\n");

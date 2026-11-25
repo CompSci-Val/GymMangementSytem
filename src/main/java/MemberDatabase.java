@@ -12,17 +12,18 @@ public class MemberDatabase {
         members = new ArrayList<>();
 
         // Sample members for demonstration
-        members.add(new Member(6200001, "Coyesha Valentine",
+        members.add(new Member(6201, "Coyesha Valentine",
                 "Coyesha@gmail.com", "18764535765",
-                new Date(105, 4, 15)));
+                new Date(105, 4, 15), "M123"));
 
-        members.add(new Member(6200002, "Daniel Macwean",
+        members.add(new Member(6202, "Daniel Macwean",
                 "Daniel@gmail.com", "18764535766",
-                new Date(105, 5, 15)));
+                new Date(105, 5, 15), "M123"));
 
-        members.add(new Member(6200003, "Bryan Seiveright",
+        members.add(new Member(6203, "Bryan Seiveright",
                 "Bryan@gmail.com", "18764535767",
-                new Date(105, 6, 15)));
+                new Date(105, 6, 15),"M123"));
+        
     }
 
     // Add a new member

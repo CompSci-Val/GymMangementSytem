@@ -16,8 +16,8 @@ public class WaitlistEntry {
     }
 
     // How long has this person been waiting?
-    public long getWaitTimeMinutes() {
-        return Duration.between(timeJoinedQueue, LocalDateTime.now()).toMinutes();
+    public long getWaitTimeSeconds() {
+        return Duration.between(timeJoinedQueue, LocalDateTime.now()).toSeconds();
     }
 
     // --- Getters ---
@@ -26,6 +26,6 @@ public class WaitlistEntry {
 
     @Override
     public String toString() {
-        return "WaitlistEntry{memberId='" + memberId + "', waited=" + getWaitTimeMinutes() + " mins}";
+        return "WaitlistEntry{memberId='" + memberId + "', waited=" + getWaitTimeSeconds() + " mins}";
     }
 }

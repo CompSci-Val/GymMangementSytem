@@ -11,7 +11,7 @@ public class TestWaitlistEntry {
         try { Thread.sleep(2000); } catch (InterruptedException e) {}
 
         // 3. Check wait time
-        System.out.println("Current wait time (minutes): " + waitlist.getWaitTimeMinutes());
+        System.out.println("Current wait time (Seconds): " + waitlist.getWaitTimeSeconds());
         
         System.out.println("SUCCESS: WaitlistEntry class is working.\n");
     }

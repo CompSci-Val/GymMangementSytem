@@ -11,11 +11,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class TrainerBooking {
-    private static final int SESSION_MINUTES = 60; // each session blocks the trainer for 1 hour
+    private static final int SESSION_Second = 60; // each session blocks the trainer for 1 hour
 
     private ArrayList<Trainer> trainers;
     private ArrayList<Booking> bookings;
     private Random random = new Random();
+    
 
     public TrainerBooking() {
         // Share the list from TrainerDatabase (create the TrainerDatabase first!)
@@ -59,7 +60,7 @@ public class TrainerBooking {
         for (Booking booking : bookings) {
             if (booking.getTrainerID().equals(trainerId)) {
                 long gap = Math.abs(Duration.between(booking.getBookingDateTime(), dateTime).toMinutes());
-                if (gap < SESSION_MINUTES) {
+                if (gap < SESSION_Second) {
                     return false;
                 }
             }
@@ -88,10 +89,11 @@ public class TrainerBooking {
     public void bookTrainer(String memberId, String trainerId, LocalDateTime dateTime) {
         Trainer trainer = findTrainer(trainerId);
         if (trainer == null) {
-            System.out.println("Trainer " + trainerId + " not found.");
-            return;
-        }
-        if (!checkAvailability(trainerId, dateTime)) {
+            System.out.println("Trainer " + trainerId + " is not found ");
+            return;}
+
+
+        if(!checkAvailability(trainerId, dateTime)) {
             System.out.println("Trainer " + trainer.getName() + " is not available at that time.");
             return;
         }
@@ -141,3 +143,4 @@ public class TrainerBooking {
         }
     }
 }
+

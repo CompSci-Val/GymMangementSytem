@@ -3,7 +3,8 @@ import java.util.List;
 
 public class CapacityManagement {
 
-    private final int MAX_CAPACITY = 20;
+    private final int MAX_CAPACITY = 2; //for sake of demo 
+
     private int currentOccupancy;
     private List<WaitlistEntry> waitlist;
 
@@ -27,6 +28,7 @@ public class CapacityManagement {
                 System.out.println("Member entered successfully.");
             } else {
                 System.out.println("Gym is at full capacity.");
+                
             }
         } else if (currentOccupancy > 0) {
             currentOccupancy--;

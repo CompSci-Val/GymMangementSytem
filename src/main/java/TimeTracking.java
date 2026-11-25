@@ -1,14 +1,16 @@
+
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class TimeTracking implements Comparable<TimeTracking> {
-    public static final int DEFAULT_SESSION_MINUTES = 60;
 
-    private static final int[] WARNING_THRESHOLDS = {30, 15, 5};
+    public static final int DEFAULT_SESSION_Seconds = 180;// for sake of demo 
+
+    private static final int[] WARNING_THRESHOLDS = {105, 60, 30, 10};
     private final String memberId;
-    private final int sessionDurationMinutes;
+    private final int sessionDurationSeconds;
     private final Clock clock;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -17,25 +19,25 @@ public class TimeTracking implements Comparable<TimeTracking> {
     private boolean expiryShown;
 
     public TimeTracking(String memberId) {
-        this(memberId, DEFAULT_SESSION_MINUTES, Clock.systemDefaultZone());
+        this(memberId, DEFAULT_SESSION_Seconds, Clock.systemDefaultZone());
     }
 
-    public TimeTracking(String memberId, int sessionDurationMinutes) {
-        this(memberId, sessionDurationMinutes, Clock.systemDefaultZone());
+    public TimeTracking(String memberId, int sessionDurationSeconds) {
+        this(memberId, sessionDurationSeconds, Clock.systemDefaultZone());
     }
 
-    public TimeTracking(String memberId, int sessionDurationMinutes, Clock clock) {
+    public TimeTracking(String memberId, int sessionDurationSeconds, Clock clock) {
         if (memberId == null || memberId.isBlank()) {
             throw new IllegalArgumentException("memberId must not be null or blank");
         }
-        if (sessionDurationMinutes <= 0) {
-            throw new IllegalArgumentException("sessionDurationMinutes must be > 0");
+        if (sessionDurationSeconds <= 0) {
+            throw new IllegalArgumentException("sessionDurationSeconds must be > 0");
         }
         if (clock == null) {
             throw new IllegalArgumentException("clock must not be null");
         }
         this.memberId = memberId;
-        this.sessionDurationMinutes = sessionDurationMinutes;
+        this.sessionDurationSeconds = sessionDurationSeconds;
         this.clock = clock;
     }
 
@@ -49,7 +51,7 @@ public class TimeTracking implements Comparable<TimeTracking> {
         Arrays.fill(warningShown, false);
         this.expiryShown = false;
     }
-    
+
     public void endSession() {
         if (!active) {
             throw new IllegalStateException("No active session for member " + memberId);
@@ -58,18 +60,20 @@ public class TimeTracking implements Comparable<TimeTracking> {
         this.active = false;
     }
 
-    /** Precise remaining time (never negative). */
+    /**
+     * Precise remaining time (never negative).
+     */
     public Duration calculateRemainingTime() {
         if (!active || startTime == null) {
             return Duration.ZERO;
         }
         Duration elapsed = Duration.between(startTime, LocalDateTime.now(clock));
-        Duration remaining = Duration.ofMinutes(sessionDurationMinutes).minus(elapsed);
+        Duration remaining = Duration.ofSeconds(sessionDurationSeconds).minus(elapsed);
         return remaining.isNegative() ? Duration.ZERO : remaining;
     }
 
     public long getRemainingTime() {
-        return calculateRemainingTime().toMinutes();
+        return calculateRemainingTime().toSeconds();
     }
 
     public void displayWarning() {
@@ -84,33 +88,47 @@ public class TimeTracking implements Comparable<TimeTracking> {
             expiryShown = true;
         }
 
-        long minutes = remaining.toMinutes();
+        long Seconds = remaining.toSeconds();
         for (int i = 0; i < WARNING_THRESHOLDS.length; i++) {
             int threshold = WARNING_THRESHOLDS[i];
-            if (threshold >= sessionDurationMinutes) {
+            if (threshold >= sessionDurationSeconds) {
                 continue; // impossible for a short session
             }
-            if (!warningShown[i] && minutes > 0 && minutes <= threshold) {
-                System.out.printf("[WARNING] Member %s: %d minutes remaining.%n",
-                        memberId, minutes);
+            if (!warningShown[i] && Seconds > 0 && Seconds <= threshold) {
+                System.out.printf("[WARNING] Member %s: %d Seconds remaining.%n",
+                        memberId, Seconds);
                 warningShown[i] = true;
             }
         }
     }
 
-    public long getSessionDurationMinutes() {
+    public long getSessionDurationSeconds() {
         if (startTime == null) {
             return 0;
         }
         LocalDateTime end = (endTime != null) ? endTime : LocalDateTime.now(clock);
-        return Duration.between(startTime, end).toMinutes();
+        return Duration.between(startTime, end).toSeconds();
     }
 
-    public String getMemberId()          { return memberId; }
-    public boolean isActive()            { return active; }
-    public LocalDateTime getStartTime()  { return startTime; }
-    public LocalDateTime getEndTime()    { return endTime; }
-    public int getSessionDurationLimit() { return sessionDurationMinutes; }
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public int getSessionDurationLimit() {
+        return sessionDurationSeconds;
+    }
 
     @Override
     public int compareTo(TimeTracking other) {
@@ -120,7 +138,7 @@ public class TimeTracking implements Comparable<TimeTracking> {
     @Override
     public String toString() {
         return String.format(
-                "TimeTracking{member='%s', active=%s, remaining=%d min, start=%s}",
+                "TimeTracking{member='%s', active=%s, remaining=%d Seconds, start=%s}",
                 memberId, active, getRemainingTime(), startTime);
     }
 }

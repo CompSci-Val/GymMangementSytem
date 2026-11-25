@@ -18,7 +18,7 @@ public class TestTrainerBooking {
         // Test searching for a trainer
         System.out.println("\nTesting Trainer Search");
 
-        Trainer trainer = database.getTrainerById(1234);
+        Trainer trainer = database.getTrainerById("1234");
 
         if (trainer != null) {
             System.out.println("Trainer found: " + trainer.getName());
@@ -29,7 +29,7 @@ public class TestTrainerBooking {
         // Test an invalid trainer ID
         System.out.println("\nTesting Invalid Trainer ID");
 
-        Trainer invalidTrainer = database.getTrainerById(9999);
+        Trainer invalidTrainer = database.getTrainerById("9999");
 
         if (invalidTrainer == null) {
             System.out.println("Invalid trainer ID rejected.");

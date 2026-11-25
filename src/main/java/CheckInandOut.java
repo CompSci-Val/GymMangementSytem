@@ -1,31 +1,16 @@
 
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Queue; 
+
 
 public class CheckInandOut {
 
     // Global queue to store members currently in the gym
     public Member member;
     public static Queue<Member> memberQueue = new LinkedList<>();
+    //private static CapacityManagement capacity;    
     
     
-    public static void scanID() {
-        java.util.Scanner input = new java.util.Scanner(System.in);
-
-        System.out.print("Enter member ID: ");
-        int ID = input.nextInt();
-
-        Member member = findMember(ID);
-
-        if (member == null) {
-            System.out.println("Invalid ID. Member not found.");
-        } else if (isInside(ID)) {
-            checkOut(member);
-            
-        } else {
-            checkIn(member);
-        }
-    }
  
     public static Member findMember(int ID) {
         // Search for the member in the database or list of members
@@ -51,8 +36,10 @@ public class CheckInandOut {
         if (!memberQueue.contains(member)) {
             memberQueue.add(member);
             System.out.println("Member " + member.getName() + " checked in.");
+           // capacity.updateOccupancy(true);
         } else {
             System.out.println("Member " + member.getName() + " is already checked in.");
+            
         }
     }
     // Method to check out a member
@@ -60,6 +47,7 @@ public class CheckInandOut {
         if (memberQueue.contains(member)) {
             memberQueue.remove(member);
             System.out.println("Member " + member.getName() + " checked out.");
+           // Menu.capacity.updateOccupancy(false);
         } else {
             System.out.println("Member " + member.getName() + " is not checked in.");
         }
