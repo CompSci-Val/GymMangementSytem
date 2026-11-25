@@ -7,6 +7,7 @@ import java.util.Arrays;
 public class TimeTracking implements Comparable<TimeTracking> {
 
     public static final int DEFAULT_SESSION_Seconds = 180;// for sake of demo 
+//>>>>>>> 27db278 (Update TimeTracking.java)
 
     private static final int[] WARNING_THRESHOLDS = {105, 60, 30, 10};
     private final String memberId;
