@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class TimeTracking implements Comparable<TimeTracking> {
-    public static final int DEFAULT_SESSION_MINUTES = 120;
+    public static final int DEFAULT_SESSION_MINUTES = 60;
 
     private static final int[] WARNING_THRESHOLDS = {30, 15, 5};
     private final String memberId;
