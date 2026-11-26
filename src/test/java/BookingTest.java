@@ -1,29 +1,71 @@
 import java.time.LocalDateTime;
 
-public class BookingTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-    public static void main(String[] args) {
-        LocalDateTime dateTime = LocalDateTime.of(2026, 11, 25, 10, 0);
+class BookingTest {
 
-        Booking booking = new Booking("B001", "M001", "T001", dateTime);
+    @Test
+    void testBookingIDIsStored() {
+        LocalDateTime dateTime =
+                LocalDateTime.of(2026, 11, 25, 10, 0);
 
-        check("Booking ID is stored", "B001".equals(booking.getBookingID()));
-        check("Member ID is stored", "M001".equals(booking.getMemberID()));
-        check("Trainer ID is stored", "T001".equals(booking.getTrainerID()));
-        check("Booking date and time are stored",
-                dateTime.equals(booking.getBookingDateTime()));
-        check("New booking status is Confirmed",
-                "Confirmed".equals(booking.getStatus()));
+        Booking booking =
+                new Booking("B001", 6201, "T001", dateTime);
 
-        booking.setStatus("Cancelled");
-        check("Booking status can be changed",
-                "Cancelled".equals(booking.getStatus()));
-
-        booking.displayBooking();
-        System.out.println("Booking tests completed.");
+        assertEquals("B001", booking.getBookingID());
     }
 
-    private static void check(String testName, boolean passed) {
-        System.out.println((passed ? "PASS: " : "FAIL: ") + testName);
+    @Test
+    void testMemberIDIsStored() {
+        LocalDateTime dateTime =
+                LocalDateTime.of(2026, 11, 25, 10, 0);
+
+        Booking booking =
+                new Booking("B001", 6201, "T001", dateTime);
+
+        assertEquals(6201, booking.getMemberID());
+    }
+
+    @Test
+    void testTrainerIDIsStored() {
+        LocalDateTime dateTime =
+                LocalDateTime.of(2026, 11, 25, 10, 0);
+
+        Booking booking =
+                new Booking("B001", 6201, "T001", dateTime);
+
+        assertEquals("T001", booking.getTrainerID());
+    }
+
+    @Test
+    void testBookingDateTimeIsStored() {
+        LocalDateTime dateTime =
+                LocalDateTime.of(2026, 11, 25, 10, 0);
+
+        Booking booking =
+                new Booking("B001", 6201, "T001", dateTime);
+
+        assertEquals(dateTime, booking.getBookingDateTime());
+    }
+
+    @Test
+    void testDefaultBookingStatusIsConfirmed() {
+        Booking booking =
+                new Booking("B001", 6201, "T001",
+                        LocalDateTime.now());
+
+        assertEquals("Confirmed", booking.getStatus());
+    }
+
+    @Test
+    void testBookingStatusCanBeCancelled() {
+        Booking booking =
+                new Booking("B001", 6201, "T001",
+                        LocalDateTime.now());
+
+        booking.setStatus("Cancelled");
+
+        assertEquals("Cancelled", booking.getStatus());
     }
 }
