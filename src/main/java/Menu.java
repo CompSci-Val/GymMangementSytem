@@ -138,6 +138,10 @@ public class Menu {
             int memberId = Integer.parseInt(username);
 
             Member member = MemberDatabase.getMemberById(memberId);
+              if (!username.startsWith("6")) {
+            System.out.println("Invalid UWI ID. Member IDs must start with 6.");
+           continue;
+    }
 
             if (member != null && member.login(memberId, password)) {
                 currentMember = member;
@@ -381,7 +385,14 @@ public class Menu {
     public static void handleFullGym(Member member) {
         String key = String.valueOf(member.getId());
         System.out.println("The gym is currently full.");
+             System.out.println("================================");
+             System.out.println("    [Warning]   THE GYM IS FULL!");
+             System.out.println("================================");
 
+    // Admin/staff only needs the notification
+ //   if (role.equals("admin")) {
+        //return;
+   // }
         if (waitingIds.contains(key)) {
             System.out.println(member.getName() + " is already on the waiting list.");
             return;
@@ -389,7 +400,7 @@ public class Menu {
         
         System.out.println("The current wait time is " + capacity.calculateWaitTime(remainingTimes()) + " Seconds");
         String answer = readLine("Join the waiting list? (y/n): ");
-         
+        
         if (answer.equalsIgnoreCase("y")) {
             capacity.addToWaitlist(new WaitlistEntry(key));
             waitingIds.add(key);

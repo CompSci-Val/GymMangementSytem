@@ -6,10 +6,11 @@ import java.util.Arrays;
 
 public class TimeTracking implements Comparable<TimeTracking> {
 
-    public static final int DEFAULT_SESSION_Seconds = 180;// for sake of demo 
-//>>>>>>> 27db278 (Update TimeTracking.java)
+    public static final int DEFAULT_SESSION_Seconds = 60;// for sake of demo 
 
-    private static final int[] WARNING_THRESHOLDS = {105, 60, 30, 10};
+    private static final int[] WARNING_THRESHOLDS = {30, 10,5 };
+
+   // private static final int[] WARNING_THRESHOLDS = {105, 60, 30, 10};
     private final String memberId;
     private final int sessionDurationSeconds;
     private final Clock clock;
