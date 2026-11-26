@@ -34,15 +34,12 @@ public class Menu {
     private static String role;
     public static CapacityManagement capacity;
     private static TrainerBooking trainerBooking;
-    private static CheckInandOut  CIO;
-    private static List<Integer> remaining = new ArrayList<>();
 
     // Active gym sessions (memberId -> timer) and the full attendance history
     private static final Map<String, TimeTracking> sessions = new LinkedHashMap<>();
     private static final List<Attendance> attendanceLog = new ArrayList<>();
     // IDs currently on the waiting list (stops the same member joining twice)
     private static final Set<String> waitingIds = new HashSet<>();
-    private String pleasework;
 
     public static void main(String[] args) {
         // The databases fill their static lists in their constructors, so create them first
@@ -69,6 +66,7 @@ public class Menu {
             
             if (role.equals("member")) {
         PersonalMenu();
+                loggedIn = false; // PersonalMenu only returns when the member signs out
              }      
              else{
                 printMainMenu();
@@ -99,6 +97,7 @@ public class Menu {
                     break;
                 case 0:
                     running = false;
+                    loggedIn = false;
                     System.out.println("Goodbye!");
                     break;
                 default:
@@ -109,26 +108,6 @@ public class Menu {
 
     }
     }
-    private static boolean signIn() {
-       final String ADMIN_USER = "admin";
-        final String ADMIN_PASS = "gym123";
-
-        System.out.println("===== GYM MANAGEMENT SYSTEM LOGIN =====");
-
-         System.out.print("Username: ");
-        String username = input.nextLine().trim();
-
-    System.out.print("Password: ");
-    String password = input.nextLine().trim();
-
-    if (username.equals(ADMIN_USER) && password.equals(ADMIN_PASS)) {
-        System.out.println("Login successful!");
-        return true;
-    }
-
-    System.out.println("Invalid username or password.");
-    return false;
-}
 
     // ------------------------------------------------------------------
     // MENUS
@@ -267,16 +246,16 @@ public class Menu {
             int choice = readInt("Choose an option: ");
             switch (choice) {
                 case 1:
-                    doCheckIn(currentMember);
+                    memberCheckIn();
                     break;
                 case 2:
-                  doCheckOut(currentMember);
+                  memberCheckOut();
                     break;
                 case 3:
                   trainerMenu();
                     break;
                 case 4:
-                viewTimeTracking();
+                viewMyTime();
                 break;
                
                 
@@ -408,7 +387,7 @@ public class Menu {
             return;
         }
         
-        System.out.println("The current wait time is " + capacity.calculateWaitTime(remaining) + " Seconds");
+        System.out.println("The current wait time is " + capacity.calculateWaitTime(remainingTimes()) + " Seconds");
         String answer = readLine("Join the waiting list? (y/n): ");
          
         if (answer.equalsIgnoreCase("y")) {
@@ -417,8 +396,58 @@ public class Menu {
         }
     }
 
+    // Member self-service check in / out (same rules as the staff scanner)
+    private static void memberCheckIn() {
+        if (CheckInandOut.isInside(currentMember.getId())) {
+            System.out.println("You are already checked in.");
+        } else if (!capacity.checkCapacity()) {
+            handleFullGym(currentMember);
+        } else {
+            doCheckIn(currentMember);
+        }
+    }
+
+    private static void memberCheckOut() {
+        if (CheckInandOut.isInside(currentMember.getId())) {
+            doCheckOut(currentMember);
+        } else {
+            System.out.println("You are not checked in.");
+        }
+    }
+
+    // Members only see their own session time
+    private static void viewMyTime() {
+        TimeTracking t = sessions.get(String.valueOf(currentMember.getId()));
+        if (t == null || !t.isActive()) {
+            System.out.println("You are not checked in.");
+            return;
+        }
+        System.out.println("Time remaining: " + t.getRemainingTime() + " seconds.");
+        t.displayWarning();
+    }
+
+    // Fresh list of every active member's remaining time (used for wait-time estimates)
+    private static List<Integer> remainingTimes() {
+        List<Integer> times = new ArrayList<>();
+        for (TimeTracking t : new ArrayList<>(sessions.values())) {
+            if (t.isActive()) {
+                times.add((int) t.getRemainingTime());
+            }
+        }
+        return times;
+    }
+
     private static void doCheckIn(Member member) {
         String key = String.valueOf(member.getId());
+        // Safety checks so a member can never be counted twice or enter a full gym
+        if (CheckInandOut.isInside(member.getId())) {
+            System.out.println(member.getName() + " is already checked in.");
+            return;
+        }
+        if (!capacity.checkCapacity()) {
+            System.out.println("The gym is full.");
+            return;
+        }
 
         CheckInandOut.checkIn(member);
         capacity.updateOccupancy(true);
@@ -433,6 +462,10 @@ public class Menu {
 
     private static void doCheckOut(Member member) {
         String key = String.valueOf(member.getId());
+        if (!CheckInandOut.isInside(member.getId())) {
+            System.out.println(member.getName() + " is not checked in.");
+            return;
+        }
 
         CheckInandOut.checkOut(member);
         capacity.updateOccupancy(false);
@@ -474,7 +507,7 @@ public class Menu {
         }
 
         System.out.println("Next on the waiting list: " + member.getName()
-                + " (waited " + next.getWaitTimeSeconds() + " min)");
+                + " (waited " + next.getWaitTimeSeconds() + " seconds)");
         doCheckIn(member);
         return true;
     }
@@ -484,13 +517,8 @@ public class Menu {
         capacity.displayWaitlist();
 
         if (!waitingIds.isEmpty()) {
-            for (TimeTracking t : sessions.values()) {
-                if (t.isActive()) {
-                    remaining.add((int) t.getRemainingTime());
-                }
-            }
             System.out.println("Estimated wait for the next free spot: "
-                    + capacity.calculateWaitTime(remaining) + " Seconds");
+                    + capacity.calculateWaitTime(remainingTimes()) + " Seconds");
         }
     }
 
@@ -518,7 +546,7 @@ public class Menu {
             System.out.printf("%-22s ID %s | %d seconds left | in for %d seconds%n",
                     nameOf(t.getMemberId()), t.getMemberId(),
                     t.getRemainingTime(), t.getSessionDurationSeconds());
-            t.displayWarning(); // prints 45 / 30 / 5 seconds  and expiry warnings once each
+            t.displayWarning(); // prints 105 / 60 / 30 / 10 second and expiry warnings once each
         }
     }
     private static void startWarningChecker() {
@@ -530,10 +558,14 @@ public class Menu {
             });
 
     scheduler.scheduleAtFixedRate(() -> {
-        for (TimeTracking t : new ArrayList<>(sessions.values())) {
-            if (t.isActive()) {
-                t.displayWarning();
+        try {
+            for (TimeTracking t : new ArrayList<>(sessions.values())) {
+                if (t.isActive()) {
+                    t.displayWarning();
+                }
             }
+        } catch (RuntimeException e) {
+            // ignore: a failed check must not stop the scheduler
         }
     }, 1, 1, TimeUnit.SECONDS);
 }
@@ -565,7 +597,7 @@ public class Menu {
     // ------------------------------------------------------------------
 
     private static void bookTrainer() {
-        int memberId = readInt("Member ID: ");
+        int memberId = role.equals("member") ? currentMember.getId() : readInt("Member ID: ");
         if (MemberDatabase.getMemberById(memberId) == null) {
             System.out.println("Member not found.");
             return;
